@@ -4,37 +4,79 @@ from typing import Union, List
 from mat import Mat
 
 
-def add(self, other: "Mat") -> "Mat": # the quotes in the type hint are there because we're referencing the class before it's defined (in itself)
-    if self.rows != other.rows or self.cols != other.cols:
-        raise ValueError("Matrices must be of equal dims")
-    elif not isinstance(other, Mat):
-        raise TypeError("Operand must be a Mat obj")
-    else:
-        newMat = [[self.data[i][j] + other.data[i][j] for j in range(self.cols)] for i in range(self.rows)] # Python makes this so easy
-        return Mat(self.rows, self.cols, newMat)
 
-def subtract(self, other: "Mat") -> "Mat":
-    if self.rows != other.rows or self.cols != other.cols:
-        raise ValueError("Matrices must be of equal dims")
-    elif not isinstance(other, Mat):
-        raise TypeError("Operand must be a Mat obj")
-    else:
-        newMat = [[self.data[i][j] - other.data[i][j] for j in range(self.cols)] for i in range(self.rows)]
-        return Mat(self.rows, self.cols, newMat)
+def add(mat1: Mat, mat2: Mat) -> Mat: # the quotes in the type hint are there because we're referencing the class before it's defined (in itself)
+	if mat1.rows != mat2.rows or mat1.cols != mat2.cols:
+		raise ValueError("Matrices must be of equal dims")
+	elif not isinstance(mat1, Mat) or not isinstance(mat2, Mat):
+		raise TypeError("Operand must be a Mat obj")
+	else:
+		newMat = [[mat1.data[i][j] + mat2.data[i][j] for j in range(mat1.cols)] for i in range(mat1.rows)] # Python makes this so easy
+		return Mat(mat1.rows, mat1.cols, newMat)
 
-def hadamard(self, scalar: Union[int, float]): # element-wise multiplication
-    if not isinstance(scalar, (int, float)):
-        raise TypeError("Operand must be a number")
-    else:
-        newMat = [[self.data[i][j] * scalar for j in range(self.cols)] for i in range(self.rows)]
-        return Mat(self.rows, self.cols, newMat)
+def subtract(mat1: Mat, mat2: Mat) -> Mat:
+	if mat1.rows != mat2.rows or mat1.cols != mat2.cols:
+		raise ValueError("Matrices must be of equal dims")
+	elif not isinstance(mat1, Mat) or not isinstance(mat2, Mat):
+		raise TypeError("Operand must be a Mat obj")
+	else:
+		newMat = [[mat1.data[i][j] - mat2.data[i][j] for j in range(mat1.cols)] for i in range(mat1.rows)]
+		return Mat(mat1.rows, mat1.cols, newMat)
 
-def transpose(self):
-    newMat = [[self.data[j][i] for j in range(self.rows)] for i in range(self.cols)]
-    return Mat(self.cols, self.rows, newMat)
+def hadamard(mat1: Mat, mat2: Mat) -> Mat: # element-wise multiplication
+	if mat1.rows != mat2.rows or mat1.cols != mat2.cols:
+		raise ValueError("Matrices must be of equal dims")
+	if not isinstance(mat1, Mat) or not isinstance(mat2, Mat):
+		raise TypeError("Operand must be a Mat obj")
+	else:
+		newMat = [[mat1.data[i][j] * mat2.data[i][j] for j in range(mat1.cols)] for i in range(mat1.rows)]
+		return Mat(mat.rows, mat.cols, newMat)
 
-def inverse(self):
-    raise NotImplementedError
+def scalarmul(mat: Mat, scalar: Union[int, float]) -> Mat:
+	if not isinstance(mat, Mat) or not isinstance(scalar, (int, float)):
+		raise TypeError("Operand must be a Mat obj and a scalar, respectively")
+	else:
+		newMat = [[mat.data[i][j] * scalar for j in range(mat.cols)] for i in range(mat.rows)]
+		return Mat(mat.rows, mat.cols, newMat)
 
-def matmul(self, other): # dot
-    raise NotImplementedError
+def transpose(mat: Mat) -> Mat:
+	newMat = [[mat.data[j][i] for j in range(mat.rows)] for i in range(mat.cols)]
+	return Mat(mat.cols, mat.rows, newMat)
+
+def determinant(mat: Mat) -> Union[int, float]:
+	if mat.rows != mat.cols:
+		raise ValueError("Mat must square be") # Yoda speak 😂
+	elif mat.rows == 2:
+		return mat.data[0][0] * mat.data[1][1] - mat.data[0][1] * mat.data[1][0]
+	else:
+		det = 0
+		for i in range(mat.rows):
+			det += ((-1)**i) * mat.data[0][i] * mat.minor(0, i).determinant()
+		return det
+
+def inverse(mat: Mat) -> Mat: # only works for 2x2 matrices ('cause I'm a lazy bastard)
+	if mat.rows != mat.cols:
+		raise ValueError("Mat square must be") # YOOOOODA!
+	elif mat.rows != 2:
+		raise NotImplementedError # I'm too lazy to implement this rn lol TODO: implement this, jackass! @simonSlamka
+	else:
+		det = mat.determinant()
+		if det == 0:
+			raise ValueError("Mat not invertible (det = 0). Check your Mat next time, doofus!")
+		else:
+			inv = 1/det
+			newMat = [
+				[mat.data[1][1] * inv, -mat.data[0][1] * inv],
+				[-mat.data[1][0] * inv, mat.data[0][0] * inv]
+			
+			]
+			return Mat(mat.rows, mat.cols, newMat)
+
+def matmul(mat1: Mat, mat2: Mat) -> Mat: # dot
+	if mat1.cols != mat2.rows:
+		raise ValueError("Matrices must be of compatible dims")
+	elif not isinstance(mat1, Mat) or not isinstance(mat2, Mat):
+		raise TypeError("Operand must be a Mat obj")
+	else:
+		newMat = [[sum([mat1.data[i][k] * mat2.data[k][j] for k in range(mat1.cols)]) for j in range(mat2.cols)] for i in range(mat1.rows)] # holy moly guacamole, that's a lot of Python right there
+		return Mat(mat1.rows, mat2.cols, newMat)
