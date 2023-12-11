@@ -47,7 +47,7 @@ class Mat:
         return scalarmul(self, other)
 
     def __pow__(self, other): # power
-        raise NotImplementedError # ! TODO: implement power for matrices 
+        raise NotImplementedError
 
     def transpose(self):
         from ops import transpose
