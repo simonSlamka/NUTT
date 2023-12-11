@@ -4,7 +4,10 @@
 # previously, I'd just write functions on the 1st level (col 1) and call it a day
 ###
 
-from typing import List, Union
+from typing import List, Union, Tuple
+import logging
+
+logging.basicConfig(level=logging.INFO)
 
 
 
@@ -47,7 +50,24 @@ class Mat:
         return scalarmul(self, other)
 
     def __pow__(self, other): # power
-        raise NotImplementedError # ! TODO: implement power for matrices 
+        from ops import power
+        return power(self, other)
+
+    def __eq__(self, other): # equality
+        from ops import equals
+        return equals(self, other)
+
+    def __getitem__(self, coords: Tuple): # indexing
+        # TODO: validate the __getitem__ method
+        return self.data[coords[0]][coords[1]]
+
+    def __setitem__(self, key, value): # setting
+        self.data[key] = value # hmm
+        # TODO: fix the __setitem__ placeholder
+
+    def __iter__(self): # iteration
+        raise NotImplementedError("Iteration is not yet implemented")
+        # TODO: implement Mat iteration
 
     def transpose(self):
         from ops import transpose
