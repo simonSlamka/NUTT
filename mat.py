@@ -21,3 +21,49 @@ class Mat:
 
     def __str__(self):
         return "\n".join([" ".join(map(str, row)) for row in self.data])
+
+    def __add__(self, other):
+        from ops import add
+        return add(self, other)
+
+    def __sub__(self, other):
+        from ops import subtract
+        return subtract(self, other)
+
+    def __mul__(self, other): # element-wise
+        from ops import hadamard
+        return hadamard(self, other)
+
+    def __matmul__(self, other): # dot
+        from ops import matmul
+        return matmul(self, other)
+
+    def __rmul__(self, other): # scalar
+        from ops import scalarmul
+        return scalarmul(self, other)
+
+    def __pow__(self, other): # power
+        raise NotImplementedError
+
+    def transpose(self):
+        from ops import transpose
+        return transpose(self)
+
+    @property # property decorator makes it so that you can call this method without the parentheses (i.e. mat.T)
+    def T(self):
+        from ops import transpose
+        return transpose(self)
+
+    @property
+    def shape(self):
+        return (self.rows, self.cols)
+
+    @property
+    def det(self):
+        from ops import determinant
+        return determinant(self)
+
+    @property
+    def inv(self):
+        from ops import inverse
+        return inverse(self)
