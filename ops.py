@@ -60,7 +60,7 @@ def inverse(mat: Mat) -> Mat: # only works for 2x2 matrices ('cause I'm a lazy b
 	if mat.rows != mat.cols:
 		raise ValueError("Mat square must be") # YOOOOODA!
 	elif mat.rows != 2:
-		raise NotImplementedError
+		raise NotImplementedError # ! I'm too lazy to implement this rn lol TODO: implement inverse for matrices of arbitrary size
 	else:
 		det = mat.determinant()
 		if det == 0:
