@@ -1,8 +1,9 @@
 """The Mat module"""
-###
-# funny thing is that this project is my, like, 4th attempt at doing an OOP design schema in Python
-# previously, I'd just write functions on the 1st level (col 1) and call it a day
-###
+
+"""
+funny thing is that this project is my, like, 4th attempt at doing an OOP design schema in Python
+previously, I'd just write functions on the 1st level (col 1) and call it a day
+"""
 
 from typing import List, Union, Tuple
 import logging
@@ -27,7 +28,7 @@ class Mat:
             self.data = [[0 for _ in range(cols)] for _ in range(rows)]
         else:
             if not all(len(row) == len(data[0]) for row in data):
-                raise ValueError("All rows must be the same length")
+                raise ValueError("All rows must be of the same length")
             else:
                 self.data = data
 
