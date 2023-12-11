@@ -1,4 +1,4 @@
-# NUT - the Neural Understanding Training
+# NUTT - the Neural Understanding Training Toolkit
 > [!NOTE]
 > Just a simple training repo for neural nets and some basic linear algebra/calculus
 
