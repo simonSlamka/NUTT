@@ -128,3 +128,15 @@ class Mat:
             return False
         else:
             return True
+
+    @property
+    def sq(self): # mat.sq (squareness)
+        if self.rows == self.cols:
+            return True
+        else:
+            return False
+
+    @property
+    def eigv(self):
+        from ops import eigs
+        return eigs(self)

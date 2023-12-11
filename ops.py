@@ -2,9 +2,14 @@
 
 from typing import Union, List, Tuple
 from mat import Mat
+from termcolor import colored
+import logging
+
+logging.basicConfig(level=logging.INFO)
 
 # these are all the operations that can be performed on Mat objects, even thought they're separate from the Mat class itself
 # it's just because I want to keep things neat and tidy and sexy
+
 
 
 def add(mat1: Mat, mat2: Mat) -> Mat: # element-wise addition
@@ -73,7 +78,7 @@ def determinant(mat: Mat) -> Union[int, float]: # computes the determinant of a 
 
 def inverse(mat: Mat) -> Mat: # only works for 2x2 mats ('cause I'm a lazy bastard)
 	if mat.rows != mat.cols:
-		raise ValueError("Mat square must be") # YOOOOODA!
+		raise ValueError("Mat square must be") # Yoda strikes again!
 	elif mat.rows != 2:
 		# ! TODO: implement inverse for matrices of arbitrary size
 		raise NotImplementedError # ! I'm too lazy to implement this rn lol 
@@ -121,3 +126,10 @@ def equals(mat1: Mat, mat2: Mat) -> bool: # equality
 				if mat1.data[i][j] != mat2.data[i][j]: # if any of the elems are not identical, then the mats are not equal
 					return False
 		return True
+
+def eigs(mat: Mat) -> List[Union[int, float]]: # eigenvalues
+	if mat.rows != mat.cols:
+		raise ValueError(colored("Mat must be SqUaRe", "yellow")) # Sponge B.
+	else:
+		# ! TODO: implement eigenvalues for matrices of arbitrary size
+		raise NotImplementedError # ! I'm too f- lazy to get this done right now ...
