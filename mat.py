@@ -5,14 +5,14 @@
 ###
 
 
-
 class Mat:
     """Matrix class"""
+
     def __init__(self, rows, cols, data: List = None):
         self.rows = rows
         self.cols = cols
         if data is None:
-            self.data = [0] * (rows * cols) # init with zeros
+            self.data = [0] * (rows * cols)  # init with zeros
         else:
             if len(data) != rows or any(len(row) != cols for row in data):
                 raise ValueError("Data must be a list of lists of equal dims")
