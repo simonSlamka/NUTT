@@ -3,6 +3,8 @@
 from typing import Union, List
 from mat import Mat
 
+# these are all the operations that can be performed on Mat objects, even thought they're separate from the Mat class itself
+# it's just because I want to keep things neat and tidy
 
 
 def add(mat1: Mat, mat2: Mat) -> Mat: # the quotes in the type hint are there because we're referencing the class before it's defined (in itself)
@@ -58,7 +60,7 @@ def inverse(mat: Mat) -> Mat: # only works for 2x2 matrices ('cause I'm a lazy b
 	if mat.rows != mat.cols:
 		raise ValueError("Mat square must be") # YOOOOODA!
 	elif mat.rows != 2:
-		raise NotImplementedError # I'm too lazy to implement this rn lol TODO: implement this, jackass! @simonSlamka
+		raise NotImplementedError # ! I'm too lazy to implement this rn lol TODO: implement inverse for matrices of arbitrary size
 	else:
 		det = mat.determinant()
 		if det == 0:
