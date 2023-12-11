@@ -65,11 +65,30 @@ class Mat:
         return equals(self, other)
 
     def __getitem__(self, coords: Tuple): # indexing
-        return self.data[coords[0]][coords[1]] # get the elem at the specified coords
+        if not isinstance(coords, tuple):
+            raise TypeError("Coords must be a tuple")
+        elif len(coords) != 2:
+            raise ValueError("Coords must be a tuple of length 2")
+        elif not all(isinstance(coord, int) for coord in coords):
+            raise TypeError("Coords must be a tuple of ints")
+        elif not all(0 <= coord < self.rows for coord in coords):
+            raise IndexError("Coords out of range of Mat")
+        else:
+            return self.data[coords[0]][coords[1]] # get the elem at the specified coords
 
-    def __setitem__(self, key, value): # setting
-        self.data[key] = value # hmm
-        # TODO: fix the __setitem__ placeholder
+    def __setitem__(self, coords: Tuple, val: Union[int, float]): # setting - use: mat[coords] = val
+        if not isinstance(coords, tuple):
+            raise TypeError("Coords must be a tuple")
+        elif len(coords) != 2:
+            raise ValueError("Coords must be a tuple of length 2")
+        elif not all(isinstance(coord, int) for coord in coords):
+            raise TypeError("Coords must be a tuple of ints")
+        elif not all(0 <= coord < self.rows for coord in coords):
+            raise IndexError("Coords out of range of Mat")
+        elif not isinstance(val, (int, float)):
+            raise TypeError("Val must be an int or float")
+        else:
+            self.data[coords[0]][coords[1]] = val # set the elem at the specified coords to the specified val
 
     def __iter__(self): # iteration
         for row in self.data:
