@@ -18,18 +18,17 @@ class Mat:
             raise ValueError("Need to specify either rows, cols, or data to construct a Mat")
         elif rows is None and cols is None:
             self.rows = len(data)
-            logging.info(f"Rows: {self.rows}")
             self.cols = len(data[0])
-            logging.info(f"Cols: {self.cols}")
-        self.rows = rows
-        self.cols = cols
+        else:
+            # fixed an issue here where I was accidentally overwriting the rows and cols attrs with None
+            self.rows = rows
+            self.cols = cols
         if data is None:
             self.data = [[0 for _ in range(cols)] for _ in range(rows)]
         else:
             if not all(len(row) == len(data[0]) for row in data):
-                raise ValueError("Data must be a list of lists of equal dims")
+                raise ValueError("All rows must be the same length")
             else:
-                # store data as a list of lists
                 self.data = data
 
 
@@ -73,28 +72,36 @@ class Mat:
         # TODO: fix the __setitem__ placeholder
 
     def __iter__(self): # iteration
-        raise NotImplementedError("Iteration is not yet implemented")
-        # TODO: implement Mat iteration
+        for row in self.data:
+            yield row
 
     def transpose(self):
         from ops import transpose
         return transpose(self)
 
     @property # property decorator makes it so that you can call this method without the parentheses (i.e. mat.T)
-    def T(self):
+    def T(self): # mat.T (can also do mat.transpose())
         from ops import transpose
         return transpose(self)
 
     @property
-    def shape(self):
+    def shape(self): # mat.shape
         return (self.rows, self.cols)
 
     @property
-    def det(self):
+    def det(self): # mat.det
         from ops import determinant
         return determinant(self)
 
     @property
-    def inv(self):
+    def inv(self): # mat.inv
         from ops import inverse
         return inverse(self)
+
+    @property
+    def bInv(self): # mat.bInv (just a quick and shorter way to check if a Mat is invertible)
+        from ops import determinant
+        if determinant(self) == 0:
+            return False
+        else:
+            return True
