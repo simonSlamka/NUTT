@@ -1,6 +1,6 @@
 """Core ops"""
 
-from typing import Union, List
+from typing import Union, List, Tuple
 from mat import Mat
 
 # these are all the operations that can be performed on Mat objects, even thought they're separate from the Mat class itself
@@ -45,6 +45,21 @@ def transpose(mat: Mat) -> Mat: # just flips the rows and cols
 	newMat = [[mat.data[j][i] for j in range(mat.rows)] for i in range(mat.cols)]
 	return Mat(mat.cols, mat.rows, newMat)
 
+def minor(mat: Mat, coords: Tuple) -> Mat: # computes the minor of a Mat
+	if not isinstance(mat, Mat):
+		raise TypeError("Operand must be a Mat obj")
+	elif not isinstance(coords, tuple):
+		raise TypeError("Coords must be a tuple")
+	elif len(coords) != 2:
+		raise ValueError("Coords must be a tuple of length 2")
+	elif not all(isinstance(coord, int) for coord in coords):
+		raise TypeError("Coords must be a tuple of ints")
+	elif not all(0 <= coord < mat.rows for coord in coords):
+		raise IndexError("Coords out of range of Mat")
+	else:
+		newMat = [[mat.data[i][j] for j in range(mat.cols) if j != coords[1]] for i in range(mat.rows) if i != coords[0]] # this computes the minor of a Mat
+		return Mat(mat.rows - 1, mat.cols - 1, newMat) # the minor is a Mat with one less row and one less col than the original Mat
+
 def determinant(mat: Mat) -> Union[int, float]: # computes the determinant of a Mat
 	if mat.rows != mat.cols:
 		raise ValueError("Mat must square be") # Yoda speak 😂
@@ -53,17 +68,17 @@ def determinant(mat: Mat) -> Union[int, float]: # computes the determinant of a 
 	else:
 		det = 0
 		for i in range(mat.rows):
-			det += ((-1)**i) * mat.data[0][i] * mat.minor(0, i).determinant()
+			det += ((-1)**i) * mat.data[0][i] * mat.minor((0, i)).det
 		return det
 
-def inverse(mat: Mat) -> Mat: # only works for 2x2 matrices ('cause I'm a lazy bastard)
+def inverse(mat: Mat) -> Mat: # only works for 2x2 mats ('cause I'm a lazy bastard)
 	if mat.rows != mat.cols:
 		raise ValueError("Mat square must be") # YOOOOODA!
 	elif mat.rows != 2:
 		# ! TODO: implement inverse for matrices of arbitrary size
 		raise NotImplementedError # ! I'm too lazy to implement this rn lol 
 	else:
-		det = mat.determinant()
+		det = mat.det
 		if det == 0:
 			raise ValueError("Mat not invertible (det = 0). Check your Mat next time, doofus!")
 		else:
@@ -72,7 +87,7 @@ def inverse(mat: Mat) -> Mat: # only works for 2x2 matrices ('cause I'm a lazy b
 				[mat.data[1][1] * inv, -mat.data[0][1] * inv],
 				[-mat.data[1][0] * inv, mat.data[0][0] * inv]
 			
-			]
+			] # formally: 1/det * [[a, -b], [-c, d]]
 			return Mat(mat.rows, mat.cols, newMat)
 
 def matmul(mat1: Mat, mat2: Mat) -> Mat: # dot
