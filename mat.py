@@ -65,8 +65,7 @@ class Mat:
         return equals(self, other)
 
     def __getitem__(self, coords: Tuple): # indexing
-        # TODO: validate the __getitem__ method
-        return self.data[coords[0]][coords[1]]
+        return self.data[coords[0]][coords[1]] # get the elem at the specified coords
 
     def __setitem__(self, key, value): # setting
         self.data[key] = value # hmm

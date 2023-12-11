@@ -83,3 +83,26 @@ def matmul(mat1: Mat, mat2: Mat) -> Mat: # dot
 	else:
 		newMat = [[sum([mat1.data[i][k] * mat2.data[k][j] for k in range(mat1.cols)]) for j in range(mat2.cols)] for i in range(mat1.rows)] # holy moly guacamole, that's a lot of Python right there
 		return Mat(mat1.rows, mat2.cols, newMat)
+
+def power(mat: Mat, power: int) -> Mat: # power
+	if not isinstance(mat, Mat) or not isinstance(power, int):
+		raise TypeError("Operand must be a Mat obj and an int, respectively")
+	elif mat.rows != mat.cols:
+		raise ValueError("Mat must be square")
+	else:
+		if power == 0:
+			return Mat(mat.rows, mat.cols, [[1 if i == j else 0 for j in range(mat.cols)] for i in range(mat.rows)]) # ID mat
+		elif power == 1:
+			return mat
+		else:
+			return mat @ power(mat, power - 1)
+
+def equals(mat1: Mat, mat2: Mat) -> bool: # equality
+	if mat1.rows != mat2.rows or mat1.cols != mat2.cols: # if the dims are not equal, then the mats are not equal
+		return False
+	else:
+		for i in range(mat1.rows):
+			for j in range(mat1.cols):
+				if mat1.data[i][j] != mat2.data[i][j]: # if any of the elems are not identical, then the mats are not equal
+					return False
+		return True
