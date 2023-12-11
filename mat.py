@@ -80,20 +80,28 @@ class Mat:
         return transpose(self)
 
     @property # property decorator makes it so that you can call this method without the parentheses (i.e. mat.T)
-    def T(self):
+    def T(self): # mat.T (can also do mat.transpose())
         from ops import transpose
         return transpose(self)
 
     @property
-    def shape(self):
+    def shape(self): # mat.shape
         return (self.rows, self.cols)
 
     @property
-    def det(self):
+    def det(self): # mat.det
         from ops import determinant
         return determinant(self)
 
     @property
-    def inv(self):
+    def inv(self): # mat.inv
         from ops import inverse
         return inverse(self)
+
+    @property
+    def bInv(self): # mat.bInv (just a quick and shorter way to check if a Mat is invertible)
+        from ops import determinant
+        if determinant(self) == 0:
+            return False
+        else:
+            return True
