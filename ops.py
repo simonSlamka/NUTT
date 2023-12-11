@@ -4,10 +4,10 @@ from typing import Union, List
 from mat import Mat
 
 # these are all the operations that can be performed on Mat objects, even thought they're separate from the Mat class itself
-# it's just because I want to keep things neat and tidy
+# it's just because I want to keep things neat and tidy and sexy
 
 
-def add(mat1: Mat, mat2: Mat) -> Mat: # the quotes in the type hint are there because we're referencing the class before it's defined (in itself)
+def add(mat1: Mat, mat2: Mat) -> Mat: # element-wise addition
 	if mat1.rows != mat2.rows or mat1.cols != mat2.cols:
 		raise ValueError("Matrices must be of equal dims")
 	elif not isinstance(mat1, Mat) or not isinstance(mat2, Mat):
@@ -16,7 +16,7 @@ def add(mat1: Mat, mat2: Mat) -> Mat: # the quotes in the type hint are there be
 		newMat = [[mat1.data[i][j] + mat2.data[i][j] for j in range(mat1.cols)] for i in range(mat1.rows)] # Python makes this so easy
 		return Mat(mat1.rows, mat1.cols, newMat)
 
-def subtract(mat1: Mat, mat2: Mat) -> Mat:
+def subtract(mat1: Mat, mat2: Mat) -> Mat: # elem-wise subtraction
 	if mat1.rows != mat2.rows or mat1.cols != mat2.cols:
 		raise ValueError("Matrices must be of equal dims")
 	elif not isinstance(mat1, Mat) or not isinstance(mat2, Mat):
@@ -34,18 +34,18 @@ def hadamard(mat1: Mat, mat2: Mat) -> Mat: # element-wise multiplication
 		newMat = [[mat1.data[i][j] * mat2.data[i][j] for j in range(mat1.cols)] for i in range(mat1.rows)]
 		return Mat(mat.rows, mat.cols, newMat)
 
-def scalarmul(mat: Mat, scalar: Union[int, float]) -> Mat:
+def scalarmul(mat: Mat, scalar: Union[int, float]) -> Mat: # scalar mul
 	if not isinstance(mat, Mat) or not isinstance(scalar, (int, float)):
 		raise TypeError("Operand must be a Mat obj and a scalar, respectively")
 	else:
 		newMat = [[mat.data[i][j] * scalar for j in range(mat.cols)] for i in range(mat.rows)]
 		return Mat(mat.rows, mat.cols, newMat)
 
-def transpose(mat: Mat) -> Mat:
+def transpose(mat: Mat) -> Mat: # just flips the rows and cols
 	newMat = [[mat.data[j][i] for j in range(mat.rows)] for i in range(mat.cols)]
 	return Mat(mat.cols, mat.rows, newMat)
 
-def determinant(mat: Mat) -> Union[int, float]:
+def determinant(mat: Mat) -> Union[int, float]: # computes the determinant of a Mat
 	if mat.rows != mat.cols:
 		raise ValueError("Mat must square be") # Yoda speak 😂
 	elif mat.rows == 2:
@@ -60,7 +60,7 @@ def inverse(mat: Mat) -> Mat: # only works for 2x2 matrices ('cause I'm a lazy b
 	if mat.rows != mat.cols:
 		raise ValueError("Mat square must be") # YOOOOODA!
 	elif mat.rows != 2:
-		raise NotImplementedError # ! I'm too lazy to implement this rn lol TODO: implement inverse for matrices of arbitrary size
+		raise NotImplementedError
 	else:
 		det = mat.determinant()
 		if det == 0:
