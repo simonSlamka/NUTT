@@ -140,3 +140,8 @@ class Mat:
     def eigv(self):
         from ops import eigs
         return eigs(self)
+
+    @property
+    def ech(self):
+        from ops import echelon
+        return echelon(self)

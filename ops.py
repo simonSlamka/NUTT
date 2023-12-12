@@ -133,3 +133,21 @@ def eigs(mat: Mat) -> List[Union[int, float]]: # eigenvalues
 	else:
 		# ! TODO: implement eigenvalues for matrices of arbitrary size
 		raise NotImplementedError # ! I'm too f- lazy to get this done right now ...
+
+def eigvecs(mat: Mat) -> List[Union[int, float]]: # eigenvectors
+	if mat.rows != mat.cols:
+		raise ValueError(colored("Mat must be s... you know what!", "red"))
+	else:
+		# ! TODO: implement eigenvectors for matrices of arbitrary size
+		raise NotImplementedError # I ... am ... too ... lazy ... to ... do ... this ... right ... now ...
+
+def echelon(mat: Mat, bReduced: bool = False) -> Mat: # row echelon form by default, reduced row echelon form if bReduced is True
+	if not isinstance(mat, Mat):
+		raise TypeError("Operand must be a Mat obj")
+	else:
+		if bReduced:
+			# ! TODO: implement reduced row echelon form for matrices of arbitrary size
+			raise NotImplementedError
+		else:
+			# ! TODO: implement row echelon form for matrices of arbitrary size
+			raise NotImplementedError # ! Yeah ... later ...
