@@ -37,31 +37,31 @@ class Mat:
         return "\n".join(" ".join(f"{num:4}" for num in row) for row in self.data)
 
     def __add__(self, other):
-        from ops import add
+        from .ops import add
         return add(self, other)
 
     def __sub__(self, other):
-        from ops import subtract
+        from .ops import subtract
         return subtract(self, other)
 
     def __mul__(self, other): # element-wise
-        from ops import hadamard
+        from .ops import hadamard
         return hadamard(self, other)
 
     def __matmul__(self, other): # dot
-        from ops import matmul
+        from .ops import matmul
         return matmul(self, other)
 
     def __rmul__(self, other): # scalar
-        from ops import scalarmul
+        from .ops import scalarmul
         return scalarmul(self, other)
 
     def __pow__(self, other): # power
-        from ops import power
+        from .ops import power
         return power(self, other)
 
     def __eq__(self, other): # equality
-        from ops import equals
+        from .ops import equals
         return equals(self, other)
 
     def __getitem__(self, coords: Tuple): # indexing
@@ -95,16 +95,16 @@ class Mat:
             yield row
 
     def transpose(self):
-        from ops import transpose
+        from .ops import transpose
         return transpose(self)
 
     def minor(self, coords: Tuple):
-        from ops import minor
+        from .ops import minor
         return minor(self, coords)
 
     @property # property decorator makes it so that you can call this method without the parentheses (i.e. mat.T)
     def T(self): # mat.T (can also do mat.transpose())
-        from ops import transpose
+        from .ops import transpose
         return transpose(self)
 
     @property
@@ -113,17 +113,17 @@ class Mat:
 
     @property
     def det(self): # mat.det
-        from ops import determinant
+        from .ops import determinant
         return determinant(self)
 
     @property
     def inv(self): # mat.inv
-        from ops import inverse
+        from .ops import inverse
         return inverse(self)
 
     @property
     def bInv(self): # mat.bInv (just a quick and shorter way to check if a Mat is invertible)
-        from ops import determinant
+        from .ops import determinant
         if determinant(self) == 0:
             return False
         else:
@@ -138,10 +138,10 @@ class Mat:
 
     @property
     def eigv(self):
-        from ops import eigs
+        from .ops import eigs
         return eigs(self)
 
     @property
     def ech(self):
-        from ops import echelon
+        from .ops import echelon
         return echelon(self)

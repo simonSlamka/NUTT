@@ -1,7 +1,7 @@
 """Core ops"""
 
 from typing import Union, List, Tuple
-from mat import Mat
+from .mat import Mat
 from termcolor import colored
 import logging
 
@@ -37,7 +37,7 @@ def hadamard(mat1: Mat, mat2: Mat) -> Mat: # element-wise multiplication
 		raise TypeError("Operand must be a Mat obj")
 	else:
 		newMat = [[mat1.data[i][j] * mat2.data[i][j] for j in range(mat1.cols)] for i in range(mat1.rows)]
-		return Mat(mat.rows, mat.cols, newMat)
+		return Mat(mat1.rows, mat1.cols, newMat)
 
 def scalarmul(mat: Mat, scalar: Union[int, float]) -> Mat: # scalar mul
 	if not isinstance(mat, Mat) or not isinstance(scalar, (int, float)):
