@@ -37,7 +37,7 @@ def hadamard(mat1: Mat, mat2: Mat) -> Mat: # element-wise multiplication
 		raise TypeError("Operand must be a Mat obj")
 	else:
 		newMat = [[mat1.data[i][j] * mat2.data[i][j] for j in range(mat1.cols)] for i in range(mat1.rows)]
-		return Mat(mat1.rows, mat1.cols, newMat)
+		return Mat(mat.rows, mat.cols, newMat)
 
 def scalarmul(mat: Mat, scalar: Union[int, float]) -> Mat: # scalar mul
 	if not isinstance(mat, Mat) or not isinstance(scalar, (int, float)):
@@ -145,31 +145,9 @@ def echelon(mat: Mat, bReduced: bool = False) -> Mat: # row echelon form by defa
 	if not isinstance(mat, Mat):
 		raise TypeError("Operand must be a Mat obj")
 	else:
-		for i in range(mat.rows):
-			if mat.data[i][i] == 0:
-				for j in range(i + 1, mat.rows):
-					if mat.data[j][i] != 0:
-						mat.data[i], mat.data[j] = mat.data[j], mat.data[i]
-						break
-				else:
-					continue
-
-				pivot = mat.data[i][i]
-
-				if bReduced:
-						for j in range(i, mat.cols):
-							mat.data[i][j] /= pivot
-
-						for j in range(mat.rows):
-							if j == i:
-								continue
-							factor = mat.data[j][i]
-							for k in range(i, mat.cols):
-								mat.data[j][k] -= factor * mat.data[i][k]
-				else:
-					for j in range(i + 1, mat.rows):
-						factor = mat.data[j][i]
-						for k in range(i, mat.cols):
-							mat.data[j][k] -= factor * mat.data[i][k]
-
-	return mat
+		if bReduced:
+			# ! TODO: implement reduced row echelon form for matrices of arbitrary size
+			raise NotImplementedError
+		else:
+			# ! TODO: implement row echelon form for matrices of arbitrary size
+			raise NotImplementedError # ! Yeah ... later ...
