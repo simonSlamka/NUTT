@@ -15,7 +15,7 @@ logging.basicConfig(level=logging.INFO)
 class Mat:
     """Matrix class"""
     def __init__(self, rows = None, cols = None, data: List[List[Union[float, int]]] = None):
-        if rows is None and cols is None and data is None:
+        if rows is None and cols is None and data is None or rows is not None and cols is not None and len(data) == 0:
             raise ValueError("Need to specify either rows, cols, or data to construct a Mat")
         elif rows is None and cols is None:
             self.rows = len(data)
@@ -98,6 +98,10 @@ class Mat:
         from ops import transpose
         return transpose(self)
 
+    def minor(self, coords: Tuple):
+        from ops import minor
+        return minor(self, coords)
+
     @property # property decorator makes it so that you can call this method without the parentheses (i.e. mat.T)
     def T(self): # mat.T (can also do mat.transpose())
         from ops import transpose
@@ -124,3 +128,20 @@ class Mat:
             return False
         else:
             return True
+
+    @property
+    def sq(self): # mat.sq (squareness)
+        if self.rows == self.cols:
+            return True
+        else:
+            return False
+
+    @property
+    def eigv(self):
+        from ops import eigs
+        return eigs(self)
+
+    @property
+    def ech(self):
+        from ops import echelon
+        return echelon(self)
