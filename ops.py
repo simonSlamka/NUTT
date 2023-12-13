@@ -65,6 +65,45 @@ def minor(mat: Mat, coords: Tuple) -> Mat: # computes the minor of a Mat
 		newMat = [[mat.data[i][j] for j in range(mat.cols) if j != coords[1]] for i in range(mat.rows) if i != coords[0]] # this computes the minor of a Mat
 		return Mat(mat.rows - 1, mat.cols - 1, newMat) # the minor is a Mat with one less row and one less col than the original Mat
 
+def exponent(mat: Mat) -> Mat: # element-wise exponentiation
+	if not isinstance(mat, Mat):
+		raise TypeError("Operand must be a Mat obj")
+	else:
+		newMat = [[mat.data[i][j] ** 2 for j in range(mat.cols)] for i in range(mat.rows)]
+		return Mat(mat.rows, mat.cols, newMat)
+
+def logarithm(mat: Mat) -> Mat:
+	if not isinstance(mat, Mat):
+		raise TypeError("Operand must be a Mat obj")
+	else:
+		# taylor
+		x = mat.data[0][0]
+		if x <= 0:
+			raise ValueError("log of non-positive number")
+		else:
+			n = 0
+			while x > 2:
+				x /= 2
+				n += 1
+
+			x -= 1
+			term = x
+			res = term
+			i = 2
+
+			while i < 20:
+				term *= -x * (i - 1) / i
+				res += term
+				i += 1
+
+			return res + n * self.log2()
+
+def log2() -> float:
+	return 0.6931471805599453 # ln(2) - now, this may seem stupid, but since this is a constant, it's actually faster to just hardcode it than to compute it every time
+
+def singular_value_decomposition(mat: Mat) -> Mat:
+	raise NotImplementedError
+
 def determinant(mat: Mat) -> Union[int, float]: # computes the determinant of a Mat
 	if mat.rows != mat.cols:
 		raise ValueError("Mat must square be") # Yoda speak 😂
@@ -155,7 +194,6 @@ def echelon(mat: Mat, bReduced: bool = False) -> Mat: # row echelon form by defa
 					continue
 
 				pivot = mat.data[i][i]
-
 				if bReduced:
 						for j in range(i, mat.cols):
 							mat.data[i][j] /= pivot

@@ -94,6 +94,10 @@ class Mat:
         for row in self.data:
             yield row
 
+    def exp(self):
+        from .ops import exponent
+        return exponent(self)
+
     def transpose(self):
         from .ops import transpose
         return transpose(self)
@@ -101,6 +105,10 @@ class Mat:
     def minor(self, coords: Tuple):
         from .ops import minor
         return minor(self, coords)
+
+    def log(self):
+        from .ops import logarithm
+        return logarithm(self)
 
     @property # property decorator makes it so that you can call this method without the parentheses (i.e. mat.T)
     def T(self): # mat.T (can also do mat.transpose())
@@ -145,3 +153,18 @@ class Mat:
     def ech(self):
         from .ops import echelon
         return echelon(self)
+
+    @property
+    def rech(self):
+        from .ops import echelon
+        return rechelon(self, bReduced=True)
+
+    @property
+    def log(self):
+        from .ops import logarithm
+        return logarithm(self)
+
+    @property
+    def svd(self):
+        from .ops import singular_value_decomposition
+        return singular_value_decomposition(self)
