@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="NUTT",
-    version="0.0.6",
+    version="0.0.14",
     packages=find_packages(),
     description="A custom machine learning library",
     author="Simon Slamka",

@@ -5,5 +5,10 @@ NUTT.egg-info/dependency_links.txt
 NUTT.egg-info/requires.txt
 NUTT.egg-info/top_level.txt
 nuttlib/__init__.py
+nuttlib/layer.py
 nuttlib/mat.py
+nuttlib/network.py
+nuttlib/neuron.py
 nuttlib/ops.py
+nuttlib/randomizer.py
+nuttlib/trainer.py

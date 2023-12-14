@@ -8,22 +8,34 @@ previously, I'd just write functions on the 1st level (col 1) and call it a day
 from typing import List, Union, Tuple
 import logging
 
-logging.basicConfig(level=logging.INFO)
+
+def _lst_to_str(lst):
+    if isinstance(lst, list):
+        return " ".join(_lst_to_str(elem) for elem in lst)
+    else:
+        return f"{lst:4}"
 
 
 
 class Mat:
-    """Matrix class"""
+    """
+    Matrix class
+
+    Init as follows:
+        row vect: Mat(data=[[1, 2, 3]])
+        col vect: Mat(data=[[1], [2], [3]])
+        mat = Mat(data=[[1, 2, 3], [4, 5, 6]]) # 2x3 mat
+    """
     def __init__(self, rows = None, cols = None, data: List[List[Union[float, int]]] = None):
-        if rows is None and cols is None and data is None or rows is not None and cols is not None and len(data) == 0:
+        if rows is None and cols is None and (data is None or len(data) == 0):
             raise ValueError("Need to specify either rows, cols, or data to construct a Mat")
-        elif rows is None and cols is None:
-            self.rows = len(data)
-            self.cols = len(data[0])
+        elif rows is None and cols is None and data is not None:
+            self.rows = int(len(data))
+            self.cols = int(len(data[0]))
         else:
             # fixed an issue here where I was accidentally overwriting the rows and cols attrs with None
-            self.rows = rows
-            self.cols = cols
+            self.rows = int(rows)
+            self.cols = int(cols)
         if data is None:
             self.data = [[0 for _ in range(cols)] for _ in range(rows)]
         else:
@@ -34,7 +46,7 @@ class Mat:
 
 
     def __str__(self):
-        return "\n".join(" ".join(f"{num:4}" for num in row) for row in self.data)
+        return "\n".join(_lst_to_str(row) for row in self.data)
 
     def __add__(self, other):
         from .ops import add
@@ -73,6 +85,8 @@ class Mat:
             raise TypeError("Coords must be a tuple of ints")
         elif not all(0 <= coord < self.rows for coord in coords):
             raise IndexError("Coords out of range of Mat")
+        elif not all(0 <= coord < self.cols for coord in coords):
+            raise IndexError("Coords out of range of Mat")
         else:
             return self.data[coords[0]][coords[1]] # get the elem at the specified coords
 
@@ -85,6 +99,8 @@ class Mat:
             raise TypeError("Coords must be a tuple of ints")
         elif not all(0 <= coord < self.rows for coord in coords):
             raise IndexError("Coords out of range of Mat")
+        elif not all(0 <= coord < self.cols for coord in coords):
+            raise IndexError("Coords out of range of Mat")
         elif not isinstance(val, (int, float)):
             raise TypeError("Val must be an int or float")
         else:
@@ -94,6 +110,10 @@ class Mat:
         for row in self.data:
             yield row
 
+    def exp(self):
+        from .ops import exponent
+        return exponent(self)
+
     def transpose(self):
         from .ops import transpose
         return transpose(self)
@@ -101,6 +121,23 @@ class Mat:
     def minor(self, coords: Tuple):
         from .ops import minor
         return minor(self, coords)
+
+    def log(self):
+        from .ops import logarithm
+        return logarithm(self)
+
+    @staticmethod
+    def log2():
+        from .ops import log2
+        return log2()
+
+    def mean(self):
+        from .ops import mean
+        return mean(self)
+
+    def sum(self):
+        from .ops import sum_mat
+        return sum_mat(self)
 
     @property # property decorator makes it so that you can call this method without the parentheses (i.e. mat.T)
     def T(self): # mat.T (can also do mat.transpose())
@@ -145,3 +182,28 @@ class Mat:
     def ech(self):
         from .ops import echelon
         return echelon(self)
+
+    @property
+    def rech(self):
+        from .ops import echelon
+        return rechelon(self, bReduced=True)
+
+    @property
+    def log(self):
+        from .ops import logarithm
+        return logarithm(self)
+
+    @property
+    def svd(self):
+        from .ops import singular_value_decomposition
+        return singular_value_decomposition(self)
+
+    @property
+    def mean(self):
+        from .ops import mean
+        return mean(self)
+
+    @property
+    def sum(self):
+        from .ops import sum_mat
+        return sum_mat(self)
